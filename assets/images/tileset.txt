@@ -1,0 +1,17 @@
+BACKGROUND 1
+x: 0
+y: 0
+witdh: 1914
+height: 1029
+
+BACKGROUND 2
+x: 0
+y: 1029
+witdh: 1914
+height: 1029
+
+TITLE
+x: 1916
+y: 0
+width: 544
+height: 216
