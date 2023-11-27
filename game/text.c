@@ -49,13 +49,8 @@ void destroy_all_texts(game_t *game, text_list_t *text_list)
 
 void display_texts(game_t *game)
 {
-    text_list_t *temp = game->text_list;
-
-    if (temp != NULL) {
-        sfRenderWindow_drawText(game->window, temp->text, NULL);
-        while (temp->next != NULL) {
-            temp = temp->next;
-            sfRenderWindow_drawText(game->window, temp->text, NULL);
-        }
+    for (text_list_t *tmp = game->text_list;
+    tmp != NULL; tmp = tmp->next) {
+        sfRenderWindow_drawText(game->window, tmp->text, NULL);
     }
 }

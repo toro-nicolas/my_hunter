@@ -7,21 +7,24 @@
 
 #include "game.h"
 
-void set_background(sfRenderWindow* window, char *file, int position[2])
+void set_background(game_t *game, char *file, int const position[2])
 {
     sfIntRect rect = {position[0], position[1], BG_WIDTH, BG_HEIGHT};
     sfTexture *texture;
     sfSprite *sprite = sfSprite_create();
-    sfVector2f scale = {0.6666, 0.6666};
+    float scale = (game->settings->window_size) ? 1.0 : 0.75;
 
+    if (game->background != NULL) {
+        sfTexture_destroy((sfTexture *) sfSprite_getTexture(game->background));
+        sfSprite_destroy(game->background);
+    }
     if (open(file, O_RDONLY) != -1) {
         texture = sfTexture_createFromFile(file, &rect);
         if (texture != NULL) {
             sfSprite_setTexture(sprite, texture, sfFalse);
-            sfSprite_setScale(sprite, scale);
-            sfRenderWindow_drawSprite(window, sprite, NULL);
+            sfSprite_setScale(sprite, (sfVector2f){scale, scale});
+            sfRenderWindow_drawSprite(game->window, sprite, NULL);
+            game->background = sprite;
         }
-        sfTexture_destroy(texture);
     }
-    sfSprite_destroy(sprite);
 }

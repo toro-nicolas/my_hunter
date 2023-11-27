@@ -45,8 +45,18 @@ void image_draw_from_rect(sfRenderWindow* window, char *file, sfIntRect* rect)
 
 void move_rect(sfIntRect *rect, int offset, int max_value)
 {
-    if (rect->left + offset == max_value) {
+    if (rect->left + offset >= max_value) {
         rect->left = 0;
+    } else {
+        rect->left = rect->left + offset;
+    }
+}
+
+void move_rect_from_start(sfIntRect *rect, int start, int offset,
+    int sprite_numbers)
+{
+    if (rect->left + offset >= offset * sprite_numbers) {
+        rect->left = start;
     } else {
         rect->left = rect->left + offset;
     }

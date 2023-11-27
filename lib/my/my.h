@@ -5,6 +5,7 @@
 ** Store libmy functions prototypes
 */
 
+#include <stdlib.h>
 #include <stddef.h>
 
 #ifndef    MY_H_

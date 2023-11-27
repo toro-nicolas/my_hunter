@@ -11,19 +11,25 @@ MAIN			=	./csfml_functions/csfml_image.c		\
 					./csfml_functions/csfml_audio.c		\
                     ./csfml_functions/csfml_pixel.c		\
                     ./csfml_functions/csfml_text.c		\
+                    ./game/audio.c						\
                     ./game/background.c					\
+                    ./game/cursor.c						\
                     ./game/event.c						\
                     ./game/event_game_over.c			\
                     ./game/event_in_game.c				\
                     ./game/event_menu.c					\
+                    ./game/event_monster.c				\
                     ./game/event_pause.c				\
                     ./game/event_setting.c				\
                     ./game/game.c						\
+                    ./game/game_infos.c					\
                     ./game/game_over.c					\
                     ./game/in_game.c					\
+                    ./game/load_setting.c				\
                     ./game/menu.c						\
-                    ./game/audio.c						\
+                    ./game/monster.c					\
                     ./game/pause.c						\
+                    ./game/save_setting.c				\
                     ./game/setting.c					\
                     ./game/sprite.c						\
                     ./game/text.c						\

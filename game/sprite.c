@@ -49,13 +49,8 @@ void destroy_all_sprites(game_t *game, sprite_list_t *sprite_list)
 
 void display_sprites(game_t *game)
 {
-    sprite_list_t *temp = game->sprite_list;
-
-    if (temp != NULL) {
-        sfRenderWindow_drawSprite(game->window, temp->sprite, NULL);
-        while (temp->next != NULL) {
-            temp = temp->next;
-            sfRenderWindow_drawSprite(game->window, temp->sprite, NULL);
-        }
+    for (sprite_list_t *tmp = game->sprite_list;
+    tmp != NULL; tmp = tmp->next) {
+        sfRenderWindow_drawSprite(game->window, tmp->sprite, NULL);
     }
 }

@@ -46,52 +46,76 @@ static void sort_state_element(game_t *game)
 
 static void on_a_button(game_t *game)
 {
-    if (game->state == MENU)
+    if (game->state == MENU && game->state_changed == 0)
         on_a_menu_button(game);
+    if (game->state == PAUSE && game->state_changed == 0)
+        on_a_pause_button(game);
+    if (game->state == SETTING && game->state_changed == 0)
+        on_a_setting_button(game);
+    if (game->state == GAME_OVER && game->state_changed == 0)
+        on_a_game_over_button(game);
 }
 
-static void display_window(game_t *game)
+static void update_window(game_t *game)
 {
     void (*display_state[])(game_t *) = {&display_menu, &display_in_game,
         &display_pause, &display_setting, &display_game_over};
 
+    if (game->state_changed == 1) {
+        game->on_button = 0;
+        game->button_id = 0;
+        destroy_all_texts(game, game->text_list);
+        destroy_all_sprites(game, game->sprite_list);
+        display_state[game->state](game);
+        sort_state_element(game);
+        game->state_changed = 0;
+    }
+}
+
+static void display_window(game_t *game)
+{
     sfRenderWindow_clear(game->window, sfBlack);
-    display_state[game->state](game);
-    sort_state_element(game);
-    set_background(game->window, TILESET, game->background_pos);
+    update_window(game);
     while (sfRenderWindow_pollEvent(game->window, &game->event)) {
         analyse_events(game, game->event);
     }
     on_a_button(game);
+    sfRenderWindow_drawSprite(game->window, game->background, NULL);
+    if (game->state == IN_GAME && game->state_changed == 0)
+        update_game(game);
     display_sprites(game);
     display_texts(game);
     sfRenderWindow_display(game->window);
-    destroy_all_texts(game, game->text_list);
-    destroy_all_sprites(game, game->sprite_list);
 }
 
 int show_help(void)
 {
     my_printf("USAGE:\n"
         "    ./my_hunter\n"
-        "HOW TO PLAY:\n");
+        "    -e or --eric -> Enable Eric mode -> Infinite lives and arrows, "
+        "you can't lose in this mode\n"
+        "HOW TO PLAY:\n"
+        "    - Launch the game\n"
+        "    - Click on play\n"
+        "    - Demons eyes will appear and you'll have to kill them\n"
+        "    - To kill them, move your cursor over them and click on a mouse "
+        "button or press the enter key of your keyboard and after the mob "
+        "will loose 1 life point\n"
+        "    - If a mob have 0 life point, he die\n"
+        "    - If you don't click on a monster, you lose 1 arrow\n"
+        "    - If a monster disappear of the window, you lose 1 life\n"
+        "    - Each small monster killed give you 100 points and each big "
+        "monster give you 300 points score\n"
+        "    - At each 1000 points score, you level up\n"
+        "    - Each mobs kill will respawn\n"
+        "    - Each mobs respawned, have a velocity depending on the level\n");
     return 0;
 }
 
-int main(int argc, char **argv)
+int init_game(int eric_mode)
 {
-    game_t *game;
+    game_t *game = create_game(eric_mode);
 
-    if (argc != 1) {
-        if (my_strcmp(argv[1], "-h") == 0 || my_strcmp(argv[1], "--help") == 0)
-            return show_help();
-        else {
-            my_putstr_error("my_hunter: invalid option\n"
-                "Try './my_hunter --help' for more information.\n");
-            return 84;
-        }
-    }
-    game = create_game();
     if (!game->window) {
         return EXIT_FAILURE;
     }
@@ -100,4 +124,22 @@ int main(int argc, char **argv)
     }
     destroy_game(game);
     return EXIT_SUCCESS;
+}
+
+int main(int argc, char **argv)
+{
+    int eric_mode = 0;
+
+    if (argc != 1) {
+        if (my_strcmp(argv[1], "-h") == 0 || my_strcmp(argv[1], "--help") == 0)
+            return show_help();
+        if (my_strcmp(argv[1], "-e") == 0 || my_strcmp(argv[1], "--eric") == 0)
+            eric_mode = 1;
+        else {
+            my_putstr_error("my_hunter: invalid option\n"
+                "Try './my_hunter --help' for more information.\n");
+            return 84;
+        }
+    }
+    return init_game(eric_mode);
 }
