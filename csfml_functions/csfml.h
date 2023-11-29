@@ -48,7 +48,8 @@ void image_draw_from_rect(sfRenderWindow* window, char *file, sfIntRect *rect);
 void move_rect(sfIntRect *rect, int offset, int max_value);
 void move_rect_from_start(sfIntRect *rect, int start, int offset,
     int sprite_numbers);
-sfSprite *create_sf_sprite(sprite_t *sprite_box, sfVector2f position);
+sfSprite *create_sf_sprite(sprite_t *sprite_box, sfTexture *texture,
+    sfVector2f position);
 
 /* Text functions */
 typedef struct text_s {

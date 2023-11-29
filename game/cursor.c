@@ -14,7 +14,8 @@ void set_cursor(game_t *game)
     sprite_t cursor_image = {.file = TILESET, .rect = &cursor_rect,
         .scale = &scale};
 
-    game->cursor = create_sf_sprite(&cursor_image, (sfVector2f){0, 0});
+    game->display->cursor = create_sf_sprite(&cursor_image,
+        game->display->game_texture, (sfVector2f){0, 0});
 }
 
 void update_cursor(game_t *game)
@@ -22,7 +23,7 @@ void update_cursor(game_t *game)
     sfVector2i cursor_position = sfMouse_getPositionRenderWindow
         (game->window);
 
-    sfSprite_setPosition(game->cursor, (sfVector2f)
+    sfSprite_setPosition(game->display->cursor, (sfVector2f)
     {((float)cursor_position.x - 25), ((float)cursor_position.y - 25)});
-    sfRenderWindow_drawSprite(game->window, game->cursor, NULL);
+    sfRenderWindow_drawSprite(game->window, game->display->cursor, NULL);
 }

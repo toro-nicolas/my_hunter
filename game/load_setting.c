@@ -10,7 +10,7 @@
 int load_window_size(void)
 {
     FILE *file = fopen("settings/window_size", "r");
-    char *number;
+    char *number = malloc(sizeof(char *));
     size_t len = 0;
 
     if (file == NULL) {
@@ -31,7 +31,7 @@ int load_window_size(void)
 int load_music_volume(void)
 {
     FILE *file = fopen("settings/music_volume", "r");
-    char *number;
+    char *number = malloc(sizeof(char *));
     size_t len = 0;
 
     if (file == NULL) {
@@ -52,7 +52,7 @@ int load_music_volume(void)
 int load_sound_volume(void)
 {
     FILE *file = fopen("settings/sound_volume", "r");
-    char *number;
+    char *number = malloc(sizeof(char *));
     size_t len = 0;
 
     if (file == NULL) {
@@ -67,5 +67,26 @@ int load_sound_volume(void)
         }
         fclose(file);
         return 100;
+    }
+}
+
+int load_record(void)
+{
+    FILE *file = fopen("settings/record", "r");
+    char *number = malloc(sizeof(char *));
+    size_t len = 0;
+
+    if (file == NULL) {
+        file = fopen("settings/record", "w");
+        fwrite("0", 1, 1, file);
+        fclose(file);
+        return 0;
+    } else {
+        if (getline(&number, &len, file) != -1) {
+            fclose(file);
+            return my_getnbr(number);
+        }
+        fclose(file);
+        return 0;
     }
 }

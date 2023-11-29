@@ -11,7 +11,7 @@
 static void sort_text_list(game_t *game)
 {
     text_list_t *previous_text_list = NULL;
-    text_list_t *current_text_list = game->text_list;
+    text_list_t *current_text_list = game->display->text_list;
     text_list_t *next_text_list = NULL;
 
     while (current_text_list != NULL) {
@@ -20,13 +20,13 @@ static void sort_text_list(game_t *game)
         previous_text_list = current_text_list;
         current_text_list = next_text_list;
     }
-    game->text_list = previous_text_list;
+    game->display->text_list = previous_text_list;
 }
 
 static void sort_sprite_list(game_t *game)
 {
     sprite_list_t *previous_sprite_list = NULL;
-    sprite_list_t *current_sprite_list = game->sprite_list;
+    sprite_list_t *current_sprite_list = game->display->sprite_list;
     sprite_list_t *next_sprite_list = NULL;
 
     while (current_sprite_list != NULL) {
@@ -35,7 +35,7 @@ static void sort_sprite_list(game_t *game)
         previous_sprite_list = current_sprite_list;
         current_sprite_list = next_sprite_list;
     }
-    game->sprite_list = previous_sprite_list;
+    game->display->sprite_list = previous_sprite_list;
 }
 
 static void sort_state_element(game_t *game)
@@ -64,8 +64,8 @@ static void update_window(game_t *game)
     if (game->state_changed == 1) {
         game->on_button = 0;
         game->button_id = 0;
-        destroy_all_texts(game, game->text_list);
-        destroy_all_sprites(game, game->sprite_list);
+        destroy_all_texts(game, game->display->text_list);
+        destroy_all_sprites(game, game->display->sprite_list);
         display_state[game->state](game);
         sort_state_element(game);
         game->state_changed = 0;
@@ -80,36 +80,12 @@ static void display_window(game_t *game)
         analyse_events(game, game->event);
     }
     on_a_button(game);
-    sfRenderWindow_drawSprite(game->window, game->background, NULL);
+    sfRenderWindow_drawSprite(game->window, game->display->background, NULL);
     if (game->state == IN_GAME && game->state_changed == 0)
         update_game(game);
     display_sprites(game);
     display_texts(game);
     sfRenderWindow_display(game->window);
-}
-
-int show_help(void)
-{
-    my_printf("USAGE:\n"
-        "    ./my_hunter\n"
-        "    -e or --eric -> Enable Eric mode -> Infinite lives and arrows, "
-        "you can't lose in this mode\n"
-        "HOW TO PLAY:\n"
-        "    - Launch the game\n"
-        "    - Click on play\n"
-        "    - Demons eyes will appear and you'll have to kill them\n"
-        "    - To kill them, move your cursor over them and click on a mouse "
-        "button or press the enter key of your keyboard and after the mob "
-        "will loose 1 life point\n"
-        "    - If a mob have 0 life point, he die\n"
-        "    - If you don't click on a monster, you lose 1 arrow\n"
-        "    - If a monster disappear of the window, you lose 1 life\n"
-        "    - Each small monster killed give you 100 points and each big "
-        "monster give you 300 points score\n"
-        "    - At each 1000 points score, you level up\n"
-        "    - Each mobs kill will respawn\n"
-        "    - Each mobs respawned, have a velocity depending on the level\n");
-    return 0;
 }
 
 int init_game(int eric_mode)

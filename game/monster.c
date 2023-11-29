@@ -9,10 +9,8 @@
 
 void destroy_all_monsters(game_t *game, monster_list_t *monster_list)
 {
-    if (game->monster_list != NULL) {
+    if (game->display->monster_list != NULL) {
         if (monster_list->monster_sprite != NULL) {
-            sfTexture_destroy((sfTexture *)sfSprite_getTexture
-                (monster_list->monster_sprite));
             sfSprite_destroy(monster_list->monster_sprite);
             monster_list->monster_sprite = NULL;
         }
@@ -20,7 +18,7 @@ void destroy_all_monsters(game_t *game, monster_list_t *monster_list)
             destroy_all_monsters(game, monster_list->next);
             free(monster_list->next);
         }
-        game->monster_list = NULL;
+        game->display->monster_list = NULL;
     }
 }
 
@@ -35,14 +33,14 @@ void add_monster(game_t *game, sfSprite *sprite,
     monster_list->velocity = velocity * game->settings->level;
     monster_list->life = rand() % 3 + 1;
     monster_list->score = score;
-    if (game->monster_list == NULL)
+    if (game->display->monster_list == NULL)
         monster_list->next = NULL;
     else
-        monster_list->next = game->monster_list;
-    game->monster_list = monster_list;
+        monster_list->next = game->display->monster_list;
+    game->display->monster_list = monster_list;
 }
 
-sfSprite *create_small_eye(game_t *game, int velocity)
+static sfSprite *create_small_eye(game_t *game, int velocity)
 {
     int selected_eye = rand() % 6;
     sfVector2f scale = {-2.5, 2.5};
@@ -56,12 +54,12 @@ sfSprite *create_small_eye(game_t *game, int velocity)
         scale.x = 2.5;
         eye_pos.x = (float)(sfRenderWindow_getSize(game->window).x);
     }
-    eye_sprite = create_sf_sprite(&eye, eye_pos);
+    eye_sprite = create_sf_sprite(&eye, game->display->game_texture, eye_pos);
     sfSprite_setTextureRect(eye_sprite, eye_rec);
     return eye_sprite;
 }
 
-sfSprite *create_big_eye(game_t *game, int velocity)
+static sfSprite *create_big_eye(game_t *game, int velocity)
 {
     int selected_eye = rand() % 2;
     sfVector2f scale = {-2.5, 2.5};
@@ -75,18 +73,23 @@ sfSprite *create_big_eye(game_t *game, int velocity)
         scale.x = 2.5;
         eye_pos.x = (float)(sfRenderWindow_getSize(game->window).x);
     }
-    eye_sprite = create_sf_sprite(&eye, eye_pos);
+    eye_sprite = create_sf_sprite(&eye, game->display->game_texture, eye_pos);
     sfSprite_setTextureRect(eye_sprite, eye_rec);
     return eye_sprite;
 }
 
 sfSprite *get_random_eye(game_t *game, int sign, int size)
 {
-    if (size == 1) {
-        return create_small_eye(game, sign);
-    }
     if (game->settings->level >= 5 && size == 3) {
         return create_big_eye(game, sign);
     }
     return create_small_eye(game, sign);
+}
+
+void display_monsters(game_t *game)
+{
+    for (monster_list_t *tmp = game->display->monster_list;
+    tmp != NULL; tmp = tmp->next) {
+        sfRenderWindow_drawSprite(game->window, tmp->monster_sprite, NULL);
+    }
 }

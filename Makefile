@@ -24,10 +24,12 @@ MAIN			=	./csfml_functions/csfml_image.c		\
                     ./game/game.c						\
                     ./game/game_infos.c					\
                     ./game/game_over.c					\
+                    ./game/help.c						\
                     ./game/in_game.c					\
                     ./game/load_setting.c				\
                     ./game/menu.c						\
                     ./game/monster.c					\
+                    ./game/mouse_on.c					\
                     ./game/pause.c						\
                     ./game/save_setting.c				\
                     ./game/setting.c					\
@@ -134,11 +136,12 @@ MAIN-OBJ		=	$(MAIN:.c=.o)
 
 OBJ				=	$(SRC:.c=.o)
 
-CFLAGS 			+=	-Werror -Wextra -Wpedantic
+CFLAGS 			+=	-Werror -Wextra -Wpedantic -g
 CFLAGS 			+=	-I./include/
 
 LDFLAGS 		+=	-L./lib/my -lmy 	\
-					-lcsfml-graphics 	\
+
+CSFMLFLAGS		+=	-lcsfml-graphics 	\
 					-lcsfml-system		\
 					-lcsfml-window		\
 					-lcsfml-audio
@@ -153,7 +156,7 @@ libmy.a:
 	@make -C./lib/my/
 
 $(NAME): $(MAIN-OBJ)
-	@gcc -o $(NAME) $(MAIN-OBJ) $(CFLAGS) $(LDFLAGS)
+	@gcc -o $(NAME) $(MAIN-OBJ) $(CFLAGS) $(LDFLAGS) $(CSFMLFLAGS)
 
 run: re
 	./$(NAME)

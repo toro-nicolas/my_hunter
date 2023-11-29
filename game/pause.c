@@ -17,12 +17,12 @@ static void init_sprite(game_t *game)
     sfVector2f button_continue_position = {window_width / 2 -
         315 * 1.3 / 2, window_height / 8 * 3.8};
     sfSprite *button_continue = create_sf_sprite(&button_continue_image,
-        button_continue_position);
+        game->display->game_texture, button_continue_position);
     sprite_t button_menu_image = {.file = TILESET, .scale = &scale};
     sfVector2f button_menu_position = {window_width / 2 - 315 * 1.3 / 2,
         window_height / 8 * 5.8};
     sfSprite *button_menu = create_sf_sprite(&button_menu_image,
-        button_menu_position);
+        game->display->game_texture, button_menu_position);
 
     sfSprite_setTextureRect(button_continue, rect);
     sfSprite_setTextureRect(button_menu, rect);
@@ -51,7 +51,7 @@ static void init_text(game_t *game)
 
 static void reset_button_texture(game_t *game)
 {
-    sprite_list_t *temp = game->sprite_list;
+    sprite_list_t *temp = game->display->sprite_list;
 
     for (int button = 0; temp->next != NULL && button < 3; button++) {
         temp = temp->next;
@@ -61,7 +61,7 @@ static void reset_button_texture(game_t *game)
 
 void on_a_pause_button(game_t *game)
 {
-    sprite_list_t *temp = game->sprite_list->next;
+    sprite_list_t *temp = game->display->sprite_list->next;
 
     if (game->on_button == 1) {
         for (int text = 0; text < game->button_id; text++)

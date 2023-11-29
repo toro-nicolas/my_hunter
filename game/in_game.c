@@ -70,6 +70,7 @@ static void init_arrows(game_t *game)
     sprite_t arrow_image = {.file = TILESET, .rect = &arrow_rect,
         .scale = &(sfVector2f){scale, scale}};
     sfSprite *arrow = create_sf_sprite(&arrow_image,
+        game->display->game_texture,
         (sfVector2f){window_width / 16 * 3, window_height / 8 * 7.125});
 
     add_sprite(game, arrow);
@@ -84,10 +85,13 @@ static void init_hearts(game_t *game)
     sprite_t heart_image = {.file = TILESET, .rect = &heart_rect,
         .scale = &(sfVector2f){scale, scale}};
     sfSprite *heart_1 = create_sf_sprite(&heart_image,
+        game->display->game_texture,
         (sfVector2f){window_width / 16 * 1, window_height / 8 * 7.2});
     sfSprite *heart_2 = create_sf_sprite(&heart_image,
+        game->display->game_texture,
         (sfVector2f){window_width / 16 * 1.5, window_height / 8 * 7.2});
     sfSprite *heart_3 = create_sf_sprite(&heart_image,
+        game->display->game_texture,
         (sfVector2f){window_width / 16 * 2, window_height / 8 * 7.2});
 
     add_sprite(game, heart_3);
@@ -99,7 +103,7 @@ void display_in_game(game_t *game)
 {
     int sign = (rand() % 2) ? -1 : 1;
 
-    set_background(game, TILESET, (int [2]){0, 0});
+    set_background(game, (int [2]){0, 0});
     if (game->settings->music_charged != IN_GAME) {
         game->settings->music_charged = IN_GAME;
         play_music(game, GAME);
@@ -110,12 +114,16 @@ void display_in_game(game_t *game)
     init_arrows(game);
 }
 
-void display_monsters(game_t *game)
+static void update_text(game_t *game)
 {
-    for (monster_list_t *tmp = game->monster_list;
-    tmp != NULL; tmp = tmp->next) {
-        sfRenderWindow_drawSprite(game->window, tmp->monster_sprite, NULL);
-    }
+    sfText_setString(game->display->text_list->text,
+        get_level_str(game));
+    sfText_setString(game->display->text_list->next->text,
+        get_record_str(game));
+    sfText_setString(game->display->text_list->next->next->text,
+        get_score_str(game));
+    sfText_setString(game->display->text_list->next->next->next->next->text,
+        my_str_nbr(game->settings->arrows));
 }
 
 static void update_life(game_t *game)
@@ -123,18 +131,16 @@ static void update_life(game_t *game)
     int life_number = 0;
     sprite_list_t *list_to_free;
 
-    for (sprite_list_t *tmp = game->sprite_list;
+    for (sprite_list_t *tmp = game->display->sprite_list;
     tmp != NULL; tmp = tmp->next) {
         life_number = life_number + 1;
     }
     if (game->settings->lives < 3 && game->settings->lives > -1 &&
     life_number - 1 != game->settings->lives) {
-        sfTexture_destroy((sfTexture *)sfSprite_getTexture
-            (game->sprite_list->sprite));
-        sfSprite_destroy(game->sprite_list->sprite);
-        game->sprite_list->sprite = NULL;
-        list_to_free = game->sprite_list;
-        game->sprite_list = game->sprite_list->next;
+        sfSprite_destroy(game->display->sprite_list->sprite);
+        game->display->sprite_list->sprite = NULL;
+        list_to_free = game->display->sprite_list;
+        game->display->sprite_list = game->display->sprite_list->next;
         free(list_to_free);
     }
 }
@@ -142,20 +148,16 @@ static void update_life(game_t *game)
 void update_game(game_t *game)
 {
     if (sfClock_getElapsedTime(game->animation_time).microseconds
-        / 1000000.0 > 0.2)
+    / 1000000.0 > 0.2)
         update_animation(game);
     if (sfClock_getElapsedTime(game->game_time).microseconds
-        / 1000000.0 > 0.005)
+    / 1000000.0 > 0.005)
         update_monster(game);
     game->settings->level = (game->settings->score + 1000) / 1000;
     if (game->settings->score > game->settings->record)
-        game->settings->record = game->settings->score;
+        update_record(game);
     check_add_monster(game);
-    sfText_setString(game->text_list->text, get_level_str(game));
-    sfText_setString(game->text_list->next->text, get_record_str(game));
-    sfText_setString(game->text_list->next->next->text, get_score_str(game));
-    sfText_setString(game->text_list->next->next->next->next->text,
-    my_str_nbr(game->settings->arrows));
+    update_text(game);
     update_life(game);
     check_game_over(game);
     display_monsters(game);
@@ -170,5 +172,5 @@ void reset_game(game_t *game)
         (game->settings->arrows == 2147483647) ? 2147483647 : 30;
     game->settings->score = 0;
     game->settings->level = 1;
-    destroy_all_monsters(game, game->monster_list);
+    destroy_all_monsters(game, game->display->monster_list);
 }

@@ -32,37 +32,32 @@ static void check_alive(game_t *game, monster_list_t *tmp,
     }
 }
 
-static void is_dead(game_t *game, monster_list_t *tmp)
-{
-    int sign = (rand() % 2) ? -1 : 1;
-    sfVector2f scale = sfSprite_getScale(tmp->monster_sprite);
-    sfVector2f new_pos = {0, (float)(rand() %
-        (int)(sfRenderWindow_getSize(game->window).y - 22 * 2.5))};
-
-    play_sound(game, KILL);
-    game->settings->score += tmp->score;
-    tmp->life = rand() % 3 + 1;
-    tmp->velocity = sign * game->settings->level;
-    scale.x = ABS(scale.x) * (-sign);
-    sfSprite_setScale(tmp->monster_sprite, scale);
-    if (sign < 0)
-        new_pos.x = (float)(sfRenderWindow_getSize(game->window).x);
-    sfSprite_setPosition(tmp->monster_sprite, new_pos);
-}
-
 static void check_dead(game_t *game, monster_list_t *tmp)
 {
-    if (tmp->next != NULL && tmp->next->life == 0)
-        is_dead(game, tmp->next);
-    if (tmp->life == 0)
-        is_dead(game, tmp);
+    int sign = (rand() % 2) ? -1 : 1;
+    int size = (rand() % 11 > 9) ? 3 : 1;
+
+    if (tmp->next != NULL && tmp->next->life == 0) {
+        play_sound(game, KILL);
+        game->settings->score += tmp->score;
+        sfSprite_destroy(tmp->next->monster_sprite);
+        tmp->next = tmp->next->next;
+        add_monster(game, get_random_eye(game, sign, size), sign, size * 100);
+    }
+    if (tmp->life == 0) {
+        play_sound(game, KILL);
+        game->settings->score += tmp->score;
+        sfSprite_destroy(tmp->monster_sprite);
+        game->display->monster_list = tmp->next;
+        add_monster(game, get_random_eye(game, sign, size), sign, size * 100);
+    }
 }
 
 void update_animation(game_t *game)
 {
     sfIntRect rect;
 
-    for (monster_list_t *tmp = game->monster_list;
+    for (monster_list_t *tmp = game->display->monster_list;
     tmp != NULL; tmp = tmp->next) {
         rect = sfSprite_getTextureRect(tmp->monster_sprite);
         move_rect_from_start(&rect, 0, tmp->size, 4);
@@ -77,7 +72,7 @@ void update_monster(game_t *game)
     float new_pos_y;
     int sign;
 
-    for (monster_list_t *tmp = game->monster_list;
+    for (monster_list_t *tmp = game->display->monster_list;
     tmp != NULL; tmp = tmp->next) {
         sprite_pos = sfSprite_getPosition(tmp->monster_sprite);
         new_pos_y = rand() % (int)(sfRenderWindow_getSize(game->window).y -
@@ -94,14 +89,13 @@ void update_monster(game_t *game)
 
 void check_add_monster(game_t *game)
 {
-    monster_list_t *temp = game->monster_list;
+    monster_list_t *temp = game->display->monster_list;
     int monster_number = 0;
     int sign = (rand() % 2) ? -1 : 1;
     int size = (rand() % 11 > 9) ? 3 : 1;
 
     for (; temp != NULL; temp = temp->next)
         monster_number = monster_number + 1;
-    if (monster_number < game->settings->level) {
+    if (monster_number < game->settings->level)
         add_monster(game, get_random_eye(game, sign, size), sign, size * 100);
-    }
 }

@@ -9,7 +9,7 @@
 
 static void mouse_on_text(game_t *game, sfEvent event)
 {
-    text_list_t *temp = game->text_list;
+    text_list_t *temp = game->display->text_list;
     int button_id = 0;
 
     if (check_mouse_move_on(event.mouseMove,
@@ -31,7 +31,7 @@ static void mouse_on_text(game_t *game, sfEvent event)
 
 static void check_click_on_button(game_t *game, sfEvent event)
 {
-    text_list_t *temp = game->text_list;
+    text_list_t *temp = game->display->text_list;
 
     if (check_mouse_click_on(event.mouseButton,
         sfText_getGlobalBounds(temp->text))) {
@@ -56,7 +56,7 @@ static void check_click_on_button(game_t *game, sfEvent event)
 void event_menu(game_t *game, sfEvent event)
 {
     if (event.type == sfEvtMouseMoved) {
-        if (game->text_list != NULL)
+        if (game->display->text_list != NULL)
             mouse_on_text(game, event);
     }
     if (event.type == sfEvtMouseButtonPressed) {

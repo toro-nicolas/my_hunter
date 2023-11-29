@@ -77,31 +77,40 @@ typedef struct settings_s {
     int arrows;
 } settings_t;
 
+typedef struct display_s {
+    sfTexture *game_texture;
+    sfSprite *background;
+    sfSprite *cursor;
+    sprite_list_t *sprite_list;
+    text_list_t *text_list;
+    monster_list_t *monster_list;
+} display_t;
+
 typedef struct game_s {
     sfRenderWindow *window;
     sfClock *game_time;
     sfClock *animation_time;
     sfEvent event;
+    settings_t *settings;
+    display_t *display;
     int old_state;
     int state;
     int state_changed;
-    sfSprite *background;
-    sfSprite *cursor;
-    settings_t *settings;
-    sprite_list_t *sprite_list;
-    text_list_t *text_list;
     int on_button;
     int button_id;
-    monster_list_t *monster_list;
 } game_t;
+/* Help */
+int show_help(void);
 
 /* Settings */
 int load_window_size(void);
 int load_music_volume(void);
 int load_sound_volume(void);
+int load_record(void);
 void update_window_size(int size);
 void update_music_volume(game_t *game, int volume);
 void update_sound_volume(game_t *game, int volume);
+void update_record(game_t *game);
 
 /* Game */
 settings_t *create_settings(int eric_mode);
@@ -113,13 +122,17 @@ void init_game_logo(game_t *game);
 void set_cursor(game_t *game);
 void update_cursor(game_t *game);
 
-/* Events */
-void change_state(game_t *game, int state, int sound);
-void set_button_id(game_t *game, int button_id);
+/* Mouse on */
 int check_mouse_move_on(sfMouseMoveEvent mouse,
     sfFloatRect text_pos);
 int check_mouse_click_on(sfMouseButtonEvent mouse,
     sfFloatRect text_pos);
+int check_mouse_on(sfVector2i mouse,
+    sfFloatRect text_pos);
+
+/* Events */
+void change_state(game_t *game, int state, int sound);
+void set_button_id(game_t *game, int button_id);
 void event_menu(game_t *game, sfEvent event);
 void event_in_game(game_t *game, sfEvent event);
 void event_pause(game_t *game, sfEvent event);
@@ -135,7 +148,7 @@ void display_setting(game_t *game);
 void display_game_over(game_t *game);
 
 /* Background */
-void set_background(game_t *game, char *file, int const position[2]);
+void set_background(game_t *game, int const position[2]);
 
 /* Sprites */
 void create_sprite_list(game_t *game, sfSprite *sprite);
@@ -167,13 +180,11 @@ void on_a_setting_button(game_t *game);
 void destroy_all_monsters(game_t *game, monster_list_t *monster_list);
 void add_monster(game_t *game, sfSprite *sprite,
     int velocity, int score);
-sfSprite *create_small_eye(game_t *game, int velocity);
-sfSprite *create_big_eye(game_t *game, int velocity);
 sfSprite *get_random_eye(game_t *game, int sign, int size);
+void display_monsters(game_t *game);
 void update_animation(game_t *game);
 void update_monster(game_t *game);
 void check_add_monster(game_t *game);
-void display_monsters(game_t *game);
 
 /* Game infos */
 char *get_level_str(game_t *game);

@@ -17,12 +17,12 @@ static void init_sprite_2(game_t *game)
     sfVector2f button_settings_position = {window_width / 4 * 1 -
         315 * 1.3 / 2, window_height / 8 * 6.5};
     sfSprite *button_settings = create_sf_sprite(&button_settings_image,
-        button_settings_position);
+        game->display->game_texture, button_settings_position);
     sprite_t button_exit_image = {.file = TILESET, .scale = &scale};
     sfVector2f button_exit_position = {window_width / 4 * 3 - 315 * 1.3 / 2,
         window_height / 8 * 6.5};
     sfSprite *button_exit = create_sf_sprite(&button_exit_image,
-        button_exit_position);
+        game->display->game_texture, button_exit_position);
 
     sfSprite_setTextureRect(button_settings, rect);
     sfSprite_setTextureRect(button_exit, rect);
@@ -39,7 +39,7 @@ static void init_sprite(game_t *game)
     sfVector2f button_restart_position = {window_width / 2 - 315 * 1.3 / 2,
         window_height / 8 * 5};
     sfSprite *button_restart = create_sf_sprite(&button_restart_image,
-        button_restart_position);
+        game->display->game_texture, button_restart_position);
 
     sfSprite_setTextureRect(button_restart, (sfIntRect){2464, 0, 315, 50});
     add_sprite(game, button_restart);
@@ -128,7 +128,7 @@ void check_game_over(game_t *game)
 
 static void reset_button_texture(game_t *game)
 {
-    sprite_list_t *temp = game->sprite_list;
+    sprite_list_t *temp = game->display->sprite_list;
 
     for (int button = 0; temp->next != NULL && button < 3; button++) {
         temp = temp->next;
@@ -138,7 +138,7 @@ static void reset_button_texture(game_t *game)
 
 void on_a_game_over_button(game_t *game)
 {
-    sprite_list_t *temp = game->sprite_list->next;
+    sprite_list_t *temp = game->display->sprite_list->next;
 
     if (game->on_button == 1) {
         for (int text = 0; text < game->button_id; text++)

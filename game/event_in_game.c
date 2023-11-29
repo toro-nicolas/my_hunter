@@ -14,7 +14,7 @@ void check_click_on_monster(game_t *game)
         (game->window);
     int clicked = 0;
 
-    for (monster_list_t *tmp = game->monster_list;
+    for (monster_list_t *tmp = game->display->monster_list;
         tmp != NULL; tmp = tmp->next) {
         eye_pos = sfSprite_getGlobalBounds(tmp->monster_sprite);
         if ((float)mouse.x > (eye_pos.left) &&
@@ -32,18 +32,15 @@ void check_click_on_monster(game_t *game)
 
 void show_monster_life(game_t *game)
 {
-    sfFloatRect eye_pos;
     sfVector2i mouse = sfMouse_getPositionRenderWindow(game->window);
-    sfText *monster_life_text = game->text_list->next->next->next->text;
+    sfText *monster_life_text = game->display->text_list->
+        next->next->next->text;
     int on_eye = 0;
 
-    for (monster_list_t *tmp = game->monster_list;
+    for (monster_list_t *tmp = game->display->monster_list;
     tmp != NULL; tmp = tmp->next) {
-        eye_pos = sfSprite_getGlobalBounds(tmp->monster_sprite);
-        if ((float)mouse.x > (eye_pos.left) &&
-        (float)mouse.x < (eye_pos.left + eye_pos.width) &&
-        (float)mouse.y > (eye_pos.top) &&
-        (float)mouse.y < (eye_pos.top + eye_pos.height)) {
+        if (check_mouse_on(mouse,
+        sfSprite_getGlobalBounds(tmp->monster_sprite))) {
             sfText_setString(monster_life_text, get_monster_life_str(tmp));
             sfText_setPosition(monster_life_text,
                 (sfVector2f){(float)mouse.x + 30, (float)mouse.y - 20});

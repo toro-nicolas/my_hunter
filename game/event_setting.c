@@ -9,7 +9,7 @@
 
 static void mouse_on_button(game_t *game, sfEvent event)
 {
-    sprite_list_t *temp = game->sprite_list->next->next;
+    sprite_list_t *temp = game->display->sprite_list->next->next;
 
     if (check_mouse_move_on(event.mouseMove,
     sfSprite_getGlobalBounds(temp->sprite))) {
@@ -25,10 +25,25 @@ static void mouse_on_button(game_t *game, sfEvent event)
     game->on_button = 0;
 }
 
+static void reset_settings(game_t *game)
+{
+    sfText_setString(game->display->text_list->next->next->text, "Off");
+    game->settings->lives = 3;
+    sfText_setString(game->display->text_list->next->next->next->text, "Off");
+    game->settings->arrows = 30;
+    sfSprite_setTextureRect(game->display->sprite_list->next->next->next->next
+    ->next->next->sprite, (sfIntRect){2464, 192, 101, 10});
+    update_music_volume(game, 50);
+    sfSprite_setTextureRect(game->display->sprite_list->next->next->next->next
+    ->next->next->next->next->sprite, (sfIntRect){2464, 192, 202, 10});
+    update_sound_volume(game, 100);
+}
+
 static int check_click_on_button(game_t *game,
     sprite_list_t *temp, sfMouseButtonEvent mouse)
 {
     if (check_mouse_click_on(mouse, sfSprite_getGlobalBounds(temp->sprite))) {
+        reset_settings(game);
         return 1;
     }
     temp = temp->next;
@@ -119,7 +134,6 @@ static int check_click_on_sound_volume(game_t *game,
 
     temp = temp->next->next->next->next->next;
     if (check_mouse_click_on(mouse, sfSprite_getGlobalBounds(temp->sprite))) {
-        my_putchar('a');
         temp = temp->next;
         sfSprite_setTextureRect(temp->sprite, (sfIntRect){2464, 192,
         (mouse.x - (window_width / 2 + 110)) / 262.6 * 202, 10});
@@ -132,8 +146,8 @@ static int check_click_on_sound_volume(game_t *game,
 
 static void check_click(game_t *game, sfEvent event)
 {
-    sprite_list_t *temp_sprite = game->sprite_list->next->next;
-    text_list_t *temp_text = game->text_list->next->next;
+    sprite_list_t *temp_sprite = game->display->sprite_list->next->next;
+    text_list_t *temp_text = game->display->text_list->next->next;
 
     if (check_click_on_button(game, temp_sprite, event.mouseButton))
         return;
@@ -151,7 +165,7 @@ static void check_click(game_t *game, sfEvent event)
 void event_setting(game_t *game, sfEvent event)
 {
     if (event.type == sfEvtMouseMoved) {
-        if (game->sprite_list != NULL)
+        if (game->display->sprite_list != NULL)
             mouse_on_button(game, event);
     }
     if (event.type == sfEvtMouseButtonPressed) {

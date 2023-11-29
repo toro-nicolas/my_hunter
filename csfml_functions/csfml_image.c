@@ -62,14 +62,15 @@ void move_rect_from_start(sfIntRect *rect, int start, int offset,
     }
 }
 
-sfSprite *create_sf_sprite(sprite_t *sprite_box, sfVector2f position)
+sfSprite *create_sf_sprite(sprite_t *sprite_box, sfTexture *texture,
+    sfVector2f position)
 {
-    sfTexture *texture = sfTexture_createFromFile(sprite_box->file,
-        sprite_box->rect);
     sfSprite *sprite = sfSprite_create();
 
     if (texture != NULL)
         sfSprite_setTexture(sprite, texture, sfFalse);
+    if (sprite_box->rect != NULL)
+        sfSprite_setTextureRect(sprite, *sprite_box->rect);
     if (sprite_box->scale != NULL)
         sfSprite_setScale(sprite, *sprite_box->scale);
     if (sprite_box->color != NULL)

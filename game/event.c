@@ -35,28 +35,6 @@ void set_button_id(game_t *game, int button_id)
     game->button_id = button_id;
 }
 
-int check_mouse_move_on(sfMouseMoveEvent mouse,
-    sfFloatRect text_pos)
-{
-    if ((float)mouse.x > (text_pos.left) &&
-    (float)mouse.x < (text_pos.left + text_pos.width) &&
-    (float)mouse.y > (text_pos.top) &&
-    (float)mouse.y < (text_pos.top + text_pos.height))
-        return 1;
-    return 0;
-}
-
-int check_mouse_click_on(sfMouseButtonEvent mouse,
-    sfFloatRect text_pos)
-{
-    if ((float)mouse.x > (text_pos.left) &&
-    (float)mouse.x < (text_pos.left + text_pos.width) &&
-    (float)mouse.y > (text_pos.top) &&
-    (float)mouse.y < (text_pos.top + text_pos.height))
-        return 1;
-    return 0;
-}
-
 void analyse_events(game_t *game, sfEvent event)
 {
     void (*event_functions[])(game_t *, sfEvent) = {&event_menu,
@@ -65,10 +43,8 @@ void analyse_events(game_t *game, sfEvent event)
     if (event.type == sfEvtClosed)
         close_window(game->window);
     if (event.type == sfEvtMouseButtonPressed) {
-        manage_mouse_click(event.mouseButton);
         if (game->state == 0)
             game->on_button = 0;
     }
-    if (event.type)
     event_functions[game->state](game, event);
 }

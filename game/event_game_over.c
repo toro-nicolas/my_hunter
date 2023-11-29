@@ -9,7 +9,7 @@
 
 static void mouse_on_button(game_t *game, sfEvent event)
 {
-    sprite_list_t *temp = game->sprite_list->next;
+    sprite_list_t *temp = game->display->sprite_list->next;
     int button_id = 0;
 
     if (check_mouse_move_on(event.mouseMove,
@@ -31,7 +31,7 @@ static void mouse_on_button(game_t *game, sfEvent event)
 
 static void check_click_on_button(game_t *game, sfEvent event)
 {
-    sprite_list_t *temp = game->sprite_list->next;
+    sprite_list_t *temp = game->display->sprite_list->next;
 
     if (check_mouse_click_on(event.mouseButton,
     sfSprite_getGlobalBounds(temp->sprite))) {
@@ -56,7 +56,7 @@ static void check_click_on_button(game_t *game, sfEvent event)
 void event_game_over(game_t *game, sfEvent event)
 {
     if (event.type == sfEvtMouseMoved) {
-        if (game->sprite_list != NULL)
+        if (game->display->sprite_list != NULL)
             mouse_on_button(game, event);
     }
     if (event.type == sfEvtMouseButtonPressed) {

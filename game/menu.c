@@ -33,7 +33,7 @@ static void init_text(game_t *game)
 void display_menu(game_t *game)
 {
     reset_game(game);
-    set_background(game, TILESET, (int [2]){0, 1080});
+    set_background(game, (int [2]){0, 1080});
     if (game->settings->music_charged != MENU) {
         game->settings->music_charged = MENU;
         play_music(game, TITLE_SCREEN);
@@ -45,9 +45,9 @@ void display_menu(game_t *game)
 
 static void reset_text_color(game_t *game)
 {
-    text_list_t *temp = game->text_list;
+    text_list_t *temp = game->display->text_list;
 
-    if (game->text_list != NULL) {
+    if (game->display->text_list != NULL) {
         sfText_setColor(temp->text, sfWhite);
         for (int text = 0; temp->next != NULL; text++) {
             temp = temp->next;
@@ -58,7 +58,7 @@ static void reset_text_color(game_t *game)
 
 void on_a_menu_button(game_t *game)
 {
-    text_list_t *temp = game->text_list;
+    text_list_t *temp = game->display->text_list;
 
     if (game->on_button == 1) {
         for (int text = 0; text < game->button_id; text++)

@@ -17,7 +17,7 @@ static void init_background(game_t *game)
     sfVector2f background_position = {window_width / 2 - 480,
         window_height / 8 * 3};
     sfSprite *background = create_sf_sprite(&background_image,
-        background_position);
+        game->display->game_texture, background_position);
 
     add_sprite(game, background);
 }
@@ -32,12 +32,12 @@ static void init_button(game_t *game)
     sfVector2f button_continue_position = {window_width / 2 - 480,
         window_height / 8 * 6};
     sfSprite *button_continue = create_sf_sprite(&button_continue_image,
-        button_continue_position);
+        game->display->game_texture, button_continue_position);
     sprite_t button_menu_image = {.file = TILESET, .scale = &scale};
     sfVector2f button_menu_position = {window_width / 2 + 480 - 315 * 1.3,
         window_height / 8 * 6};
     sfSprite *button_menu = create_sf_sprite(&button_menu_image,
-        button_menu_position);
+        game->display->game_texture, button_menu_position);
 
     sfSprite_setTextureRect(button_continue, rect);
     sfSprite_setTextureRect(button_menu, rect);
@@ -74,7 +74,8 @@ static void init_window_size(game_t *game)
     sprite_t size_image = {.file = TILESET, .scale = &scale, .rect = &rect};
     sfVector2f size_position = {window_width / 2 - pos,
         window_height / 8 * 3 + 70};
-    sfSprite *size = create_sf_sprite(&size_image, size_position);
+    sfSprite *size = create_sf_sprite(&size_image,
+        game->display->game_texture, size_position);
 
     add_sprite(game, size);
 }
@@ -109,11 +110,13 @@ static void init_trackbar_music(game_t *game)
     sprite_t empty_image = {.file = TILESET, .scale = &scale, .rect = &rect};
     sfVector2f empty_position = {window_width / 2 + 110,
         window_height / 8 * 3 + 135};
-    sfSprite *empty = create_sf_sprite(&empty_image, empty_position);
+    sfSprite *empty = create_sf_sprite(&empty_image,
+        game->display->game_texture, empty_position);
     sprite_t full_image = {.file = TILESET, .scale = &scale};
     sfVector2f full_position = {window_width / 2 + 110,
         window_height / 8 * 3 + 135};
-    sfSprite *full = create_sf_sprite(&full_image, full_position);
+    sfSprite *full = create_sf_sprite(&full_image,
+        game->display->game_texture, full_position);
 
     sfSprite_setTextureRect(full, (sfIntRect){2464, 192,
         (int)(game->settings->music_volume / 100 * 202), 10});
@@ -130,11 +133,13 @@ static void init_trackbar_sound(game_t *game)
     sprite_t empty_image = {.file = TILESET, .scale = &scale, .rect = &rect};
     sfVector2f empty_position = {window_width / 2 + 110,
         window_height / 8 * 3 + 225};
-    sfSprite *empty = create_sf_sprite(&empty_image, empty_position);
+    sfSprite *empty = create_sf_sprite(&empty_image,
+        game->display->game_texture, empty_position);
     sprite_t full_image = {.file = TILESET, .scale = &scale};
     sfVector2f full_position = {window_width / 2 + 110,
         window_height / 8 * 3 + 225};
-    sfSprite *full = create_sf_sprite(&full_image, full_position);
+    sfSprite *full = create_sf_sprite(&full_image,
+        game->display->game_texture, full_position);
 
     sfSprite_setTextureRect(full, (sfIntRect){2464, 192,
         (int)(game->settings->sound_volume / 100 * 202), 10});
@@ -144,7 +149,7 @@ static void init_trackbar_sound(game_t *game)
 
 static void reset_button_texture(game_t *game)
 {
-    sprite_list_t *temp = game->sprite_list->next;
+    sprite_list_t *temp = game->display->sprite_list->next;
 
     for (int button = 0; temp->next != NULL && button < 2; button++) {
         temp = temp->next;
@@ -154,7 +159,7 @@ static void reset_button_texture(game_t *game)
 
 void on_a_setting_button(game_t *game)
 {
-    sprite_list_t *temp = game->sprite_list->next;
+    sprite_list_t *temp = game->display->sprite_list->next;
 
     if (game->on_button == 1) {
         for (int text = 0; text < game->button_id; text++)

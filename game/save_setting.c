@@ -36,3 +36,13 @@ void update_sound_volume(game_t *game, int volume)
     fwrite(my_str_nbr(volume), 1, my_strlen(my_str_nbr(volume)), file);
     fclose(file);
 }
+
+void update_record(game_t *game)
+{
+    FILE *file = fopen("settings/record", "w");
+
+    game->settings->record = game->settings->score;
+    fwrite(my_str_nbr(game->settings->record), 1,
+        my_strlen(my_str_nbr(game->settings->record)), file);
+    fclose(file);
+}
