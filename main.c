@@ -38,7 +38,7 @@ static void sort_sprite_list(game_t *game)
     game->display->sprite_list = previous_sprite_list;
 }
 
-static void sort_state_element(game_t *game)
+void sort_state_element(game_t *game)
 {
     sort_sprite_list(game);
     sort_text_list(game);
@@ -76,7 +76,8 @@ static void display_window(game_t *game)
 {
     sfRenderWindow_clear(game->window, sfBlack);
     update_window(game);
-    while (sfRenderWindow_pollEvent(game->window, &game->event)) {
+    while (game->state_changed == 0 &&
+    sfRenderWindow_pollEvent(game->window, &game->event)) {
         analyse_events(game, game->event);
     }
     on_a_button(game);

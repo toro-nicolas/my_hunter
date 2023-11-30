@@ -100,15 +100,17 @@ typedef struct game_s {
     int on_button;
     int button_id;
 } game_t;
+
 /* Help */
 int show_help(void);
 
 /* Settings */
+void sort_state_element(game_t *game);
 int load_window_size(void);
 int load_music_volume(void);
 int load_sound_volume(void);
 int load_record(void);
-void update_window_size(int size);
+void update_window_size(game_t *game, int size);
 void update_music_volume(game_t *game, int volume);
 void update_sound_volume(game_t *game, int volume);
 void update_record(game_t *game);

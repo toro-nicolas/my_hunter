@@ -7,14 +7,28 @@
 
 #include "game.h"
 
-void update_window_size(int size)
+void update_window_size(game_t *game, int size)
 {
     FILE *file = fopen("settings/window_size", "w");
+    int width = (size) ? 1920 : 1440;
+    int height = (size) ? 1080 : 810;
 
     fwrite(my_str_nbr(size), 1, 1, file);
     fclose(file);
-    my_printf("Please, restart the game for see changes !\n");
-    exit(0);
+    sfRenderWindow_close(game->window);
+    sfRenderWindow_destroy(game->window);
+    game->window = sfRenderWindow_create((sfVideoMode){
+        width, height, 32}, "my_hunter", sfClose, NULL);
+    sfRenderWindow_setFramerateLimit(game->window, 120);
+    game->settings->window_size = size;
+    destroy_all_texts(game, game->display->text_list);
+    destroy_all_sprites(game, game->display->sprite_list);
+    if (game->old_state == MENU)
+        set_background(game, (int [2]){0, 1080});
+    if (game->old_state == GAME_OVER)
+        set_background(game, (int [2]){0, 0});
+    display_setting(game);
+    sort_state_element(game);
 }
 
 void update_music_volume(game_t *game, int volume)

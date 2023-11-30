@@ -54,7 +54,7 @@ static int check_click_on_button(game_t *game,
     return 0;
 }
 
-static void check_click_on_size(game_t *game, sfMouseButtonEvent mouse)
+static int check_click_on_size(game_t *game, sfMouseButtonEvent mouse)
 {
     float window_width = (float)sfRenderWindow_getSize(game->window).x;
     float window_height = (float)sfRenderWindow_getSize(game->window).y;
@@ -64,17 +64,18 @@ static void check_click_on_size(game_t *game, sfMouseButtonEvent mouse)
     mouse.y < window_height / 8 * 3 + 70 + 50 &&
     mouse.x > window_width / 2 - 250 &&
     mouse.x < window_width / 2 - 250 + 100) {
-        update_window_size(0);
-        sfRenderWindow_close(game->window);
+        update_window_size(game, 0);
+        return 1;
     }
     if (game->settings->window_size == 0 &&
     mouse.y > window_height / 8 * 3 + 70 &&
     mouse.y < window_height / 8 * 3 + 70 + 50 &&
     mouse.x > window_width / 2 - 125 &&
     mouse.x < window_width / 2 - 125 + 100) {
-        update_window_size(1);
-        sfRenderWindow_close(game->window);
+        update_window_size(game, 1);
+        return 1;
     }
+    return 0;
 }
 
 static int check_click_on_infinite_lives(game_t *game,
@@ -151,7 +152,8 @@ static void check_click(game_t *game, sfEvent event)
 
     if (check_click_on_button(game, temp_sprite, event.mouseButton))
         return;
-    check_click_on_size(game, event.mouseButton);
+    if (check_click_on_size(game, event.mouseButton))
+        return;
     if (check_click_on_infinite_lives(game, temp_text, event.mouseButton))
         return;
     if (check_click_on_infinite_arrows(game, temp_text, event.mouseButton))

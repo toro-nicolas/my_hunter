@@ -111,7 +111,6 @@ void display_game_over(game_t *game)
     init_sprite(game);
     init_text(game);
     sfRenderWindow_setMouseCursorVisible(game->window, sfTrue);
-    reset_game(game);
 }
 
 void check_game_over(game_t *game)

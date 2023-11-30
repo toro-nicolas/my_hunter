@@ -37,6 +37,7 @@ static void check_click_on_button(game_t *game, sfEvent event)
     sfSprite_getGlobalBounds(temp->sprite))) {
         play_sound(game, CLICK);
         change_state(game, IN_GAME, 0);
+        reset_game(game);
         return;
     }
     temp = temp->next;
@@ -48,9 +49,8 @@ static void check_click_on_button(game_t *game, sfEvent event)
     }
     temp = temp->next;
     if (check_mouse_click_on(event.mouseButton,
-    sfSprite_getGlobalBounds(temp->sprite))) {
+    sfSprite_getGlobalBounds(temp->sprite)))
         sfRenderWindow_close(game->window);
-    }
 }
 
 void event_game_over(game_t *game, sfEvent event)
