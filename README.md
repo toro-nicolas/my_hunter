@@ -4,7 +4,6 @@
 ### Table of contents
 - [Goal](https://github.com/EpitechPromo2028/B-MUL-100-NCE-1-1-myhunter-nicolas.toro/tree/main#goal)
 - [How to compile it ?](https://github.com/EpitechPromo2028/B-MUL-100-NCE-1-1-myhunter-nicolas.toro/tree/main#how-to-compile-it-)
-- [How to use it ?](https://github.com/EpitechPromo2028/B-MUL-100-NCE-1-1-myhunter-nicolas.toro/tree/main#how-to-use-it-)
 - [How to play ?](https://github.com/EpitechPromo2028/B-MUL-100-NCE-1-1-myhunter-nicolas.toro/tree/main#how-to-play-)
 - [Project status](https://github.com/EpitechPromo2028/B-MUL-100-NCE-1-1-myhunter-nicolas.toro/tree/main#project-status)
 
