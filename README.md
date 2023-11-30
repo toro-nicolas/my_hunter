@@ -136,4 +136,24 @@ Settings :
 |   ✅    |           Add a settings menu for change parameters           |
 |   ✅    |                     Save all the settings                     |
 |   ✅    | Add different eyes with different statistics (life, speed...) |
-|   ❌    |                  Add a boss (Eye of Cthulhu)                  |
+
+##### Future features (for the 1.1.0) :
+Importance :    
+- 1 : very important    
+- 2 : it will have to be done    
+- 3 : not a priority    
+
+| Status | Importance |                                                         Description                                                          |
+|:------:|:----------:|:----------------------------------------------------------------------------------------------------------------------------:|
+|   ❌    |     1      |                       Print an error message and don't launch the game when the asset aren't detected                        |
+|   ❌    |     2      |                                      Update the tileset to make it cleaner and smaller                                       |
+|   ❌    |     2      |                                                    Change the game cursor                                                    |
+|   ❌    |     1      |                              Replace the max int for the infinite arrow to the infinite symbol                               |
+|   ❌    |     3      |                                                    Add the window resize                                                     |
+|   ❌    |     2      |                                   Change all sprite origin and position to make it cleaner                                   |
+|   ❌    |     2      |                                          Make an animation when an arrow is thrown                                           |
+|   ❌    |     2      |                                          Make an animation when a monster is killed                                          |
+|   ❌    |     3      |                                                 Add a boss (Eye of Cthulhu)                                                  |
+|   ❌    |     3      |                               Add a the Terraria guide for help you to understand how to play                                |
+|   ❌    |     3      |                                                     Add multiple weapons                                                     |
+|   ❌    |     3      | Add power up (an arrow that lets you regain arrows, a bomb that kills all enemies at once, and a tower that shoots monsters) |
