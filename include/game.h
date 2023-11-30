@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <time.h>
+#include <stdio.h>
 #include "csfml.h"
 
 #ifndef GAME_H_
