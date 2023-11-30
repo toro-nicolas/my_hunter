@@ -96,6 +96,7 @@ int init_game(int eric_mode)
     if (!game->window) {
         return EXIT_FAILURE;
     }
+    srand(time(NULL));
     while (sfRenderWindow_isOpen(game->window)) {
         display_window(game);
     }
