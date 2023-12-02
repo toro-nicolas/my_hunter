@@ -148,8 +148,6 @@ CSFMLFLAGS		+=	-lcsfml-graphics 	\
 
 TEST_FLAGS 		+= 	--coverage -lcriterion -lgcov
 
-VALGRIND_FLAGS 	+=	-g3
-
 all: libmy.a $(NAME)
 
 libmy.a:
@@ -162,11 +160,11 @@ run: re
 	./$(NAME)
 
 valgrind: fclean libmy.a $(MAIN-OBJ)
-	@gcc -o $(NAME) $(MAIN-OBJ) $(VALGRIND_FLAGS) $(CFLAGS) $(LDFLAGS)
+	@gcc -o $(NAME) $(MAIN-OBJ) -g3 $(CFLAGS) $(LDFLAGS) $(CSFMLFLAGS)
 	@valgrind -s ./$(NAME)
 
 valgrind-massif: fclean libmy.a $(MAIN-OBJ)
-	@gcc -o $(NAME) $(MAIN-OBJ) $(VALGRIND_FLAGS) $(CFLAGS) $(LDFLAGS)
+	@gcc -o $(NAME) $(MAIN-OBJ) -g3 $(CFLAGS) $(LDFLAGS) $(CSFMLFLAGS)
 	@valgrind -s --tool=massif ./$(NAME)
 
 clean:

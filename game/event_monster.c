@@ -37,14 +37,14 @@ static void check_dead(game_t *game, monster_list_t *tmp)
     int sign = (rand() % 2) ? -1 : 1;
     int size = (rand() % 11 > 9) ? 3 : 1;
 
-    if (tmp->next != NULL && tmp->next->life == 0) {
+    if (tmp->next != NULL && tmp->next->life <= 0) {
         play_sound(game, KILL);
         game->settings->score += tmp->score;
         sfSprite_destroy(tmp->next->monster_sprite);
         tmp->next = tmp->next->next;
         add_monster(game, get_random_eye(game, sign, size), sign, size * 100);
     }
-    if (tmp->life == 0) {
+    if (tmp->life <= 0) {
         play_sound(game, KILL);
         game->settings->score += tmp->score;
         sfSprite_destroy(tmp->monster_sprite);

@@ -37,12 +37,14 @@
     #define BG_WIDTH 1920
     #define BG_HEIGHT 1080
 
-    /* State */
-    #define MENU 0
-    #define IN_GAME 1
-    #define PAUSE 2
-    #define SETTING 3
-    #define GAME_OVER 4
+/* State */
+enum game_state {
+    MENU,
+    IN_GAME,
+    PAUSE,
+    SETTING,
+    GAME_OVER
+};
 
 /* Game */
 typedef struct monster_list_s {

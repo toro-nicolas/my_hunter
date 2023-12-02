@@ -19,7 +19,7 @@ int load_window_size(void)
         fclose(file);
         return 0;
     } else {
-        if (getline(&number, &len, file) != -1) {
+        if (fread(number, 1, 1, file) != 0) {
             fclose(file);
             return my_getnbr(number);
         }
@@ -40,7 +40,7 @@ int load_music_volume(void)
         fclose(file);
         return 50;
     } else {
-        if (getline(&number, &len, file) != -1) {
+        if (fread(number, 1, 3, file) != 0) {
             fclose(file);
             return my_getnbr(number);
         }
@@ -61,7 +61,7 @@ int load_sound_volume(void)
         fclose(file);
         return 100;
     } else {
-        if (getline(&number, &len, file) != -1) {
+        if (fread(number, 1, 3, file) != 0) {
             fclose(file);
             return my_getnbr(number);
         }
@@ -82,7 +82,7 @@ int load_record(void)
         fclose(file);
         return 0;
     } else {
-        if (getline(&number, &len, file) != -1) {
+        if (fread(number, 1, 11, file) != 0) {
             fclose(file);
             return my_getnbr(number);
         }
