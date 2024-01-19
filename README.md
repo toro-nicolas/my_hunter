@@ -2,10 +2,10 @@
 <div align="center"><img src="https://github.com/toro-nicolas/MUL_my_hunter_2028/assets/146118419/51d0092e-8780-475f-83aa-88a3d10bf7b7"></div>
 
 ### Table of contents
-- [Goal](https://github.com/EpitechPromo2028/B-MUL-100-NCE-1-1-myhunter-nicolas.toro/tree/main#goal)
-- [How to compile it ?](https://github.com/EpitechPromo2028/B-MUL-100-NCE-1-1-myhunter-nicolas.toro/tree/main#how-to-compile-it-)
-- [How to play ?](https://github.com/EpitechPromo2028/B-MUL-100-NCE-1-1-myhunter-nicolas.toro/tree/main#how-to-play-)
-- [Project status](https://github.com/EpitechPromo2028/B-MUL-100-NCE-1-1-myhunter-nicolas.toro/tree/main#project-status)
+- [Goal](https://github.com/toro-nicolas/my_hunter#goal)
+- [How to compile it ?](https://github.com/toro-nicolas/my_hunter#how-to-compile-it-)
+- [How to play ?](https://github.com/toro-nicolas/my_hunter#how-to-play-)
+- [Project status](https://github.com/toro-nicolas/my_hunter#project-status)
 
 ### Goal
 In this project, you are asked to make a **small video game** based on the rules of **Duck Hunt**.    
